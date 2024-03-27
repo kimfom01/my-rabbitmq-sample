@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rabbit-network
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+
+  api:
+    build:
+      context: ./RabbitMQAPI/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - rabbit-network
+
+  console-consumer:
+    build:
+      context: ./ConsoleConsumer/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - rabbit-network
+
+networks:
+  rabbit-network:
+    driver: bridge
