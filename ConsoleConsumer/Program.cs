@@ -11,9 +11,9 @@ ConnectionFactory factory = new()
     ClientProvidedName = "Rabbit Receiver 1 App"
 };
 
-IConnection connection = factory.CreateConnection();
+using var connection = factory.CreateConnection();
 
-IModel channel = connection.CreateModel();
+using IModel channel = connection.CreateModel();
 
 const string exchangeName = "DemoExchange";
 const string routingKey = "demo-routing-key";
